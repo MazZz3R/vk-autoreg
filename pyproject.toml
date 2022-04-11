@@ -10,6 +10,8 @@ pydantic = "^1.9.0"
 requests = "^2.27.1"
 vk-api = "^11.9.7"
 smsactivateru = "^1.2.6"
+PySocks = "^1.7.1"
+proxybroker = "^0.3.2"
 
 [tool.poetry.dev-dependencies]
 

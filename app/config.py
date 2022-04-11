@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     sms_activate_api_key: str
     names_path: FilePath
     proxies_path: FilePath
+    client_id: int = 2274003
+    client_secret: str = "hHbZxrka2uZ6jB1inYsH"
 
     class Config:
         env_file_encoding = 'utf-8'
