@@ -9,7 +9,7 @@ CONFIG_PATH = Path('config.json')
 
 def json_config_settings_source(settings: BaseSettings) -> Dict[str, Any]:
     encoding = settings.__config__.env_file_encoding
-    return json.loads(CONFIG_PATH.read_text(encoding))
+    return json.loads(CONFIG_PATH.read_text(encoding, errors='ignore'))
 
 
 class Settings(BaseSettings):
@@ -56,6 +56,9 @@ def first_time() -> Settings:
 
 
 if not Path("config.json").exists():
+    with open("config.json", "w+", encoding="utf-8") as file:
+        file.write("{}")
+
     app_settings = first_time()
 else:
     app_settings = Settings()

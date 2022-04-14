@@ -2,6 +2,7 @@ import json
 import random
 import secrets
 from typing import List, Dict, Optional
+import requests
 
 import vk_api
 
@@ -9,13 +10,15 @@ from app_logger import get_logger
 from config import app_settings
 
 logger = get_logger(__name__)
-import requests
+
 logger.info("Выгрузка базы имён")
-with app_settings.names_path.open() as file:
+with app_settings.names_path.open(encoding='utf-8') as file:
     data: Dict[str, Dict[str, List[str]]] = json.load(file)
+
 
 class HumanSignupError(Exception):
     pass
+
 
 class Human:
     def __init__(
@@ -33,8 +36,8 @@ class Human:
         self.birthday = birthday or f"{random.randint(1, 27)}.{random.randint(1, 12)}.{random.randint(1980, 2000)}"
 
     def __repr__(self):
-        return f"<Human: name={self.first_name} {self.last_name} sex={self.sex}" \
-         "birthday={self.birthday}password={self.password}> "
+        return f"<Human: name={self.first_name} {self.last_name} sex={self.sex} " \
+         f"birthday={self.birthday}password={self.password}> "
 
 
 class VkHuman(Human):
@@ -89,6 +92,7 @@ class VkHuman(Human):
             print(error)
             print(f"Bad proxy {self.proxy}")
             logger.error(f"Bad proxy {self.proxy}")
+            raise HumanSignupError("Bad proxy")
 
     def confirm(self, code: int):
         return self.vk.auth.confirm(

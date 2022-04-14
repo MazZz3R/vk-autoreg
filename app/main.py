@@ -9,7 +9,7 @@ def main():
     sms = SmsActivate()
 
     logger.info("Выгрузка прокси")
-    with app_settings.proxies_path.open() as file:
+    with app_settings.proxies_path.open(encoding='utf-8') as file:
         proxies = [proxy.strip() for proxy in file.readlines()]
 
     log = open("log.txt", "a+")
@@ -27,7 +27,7 @@ def main():
         logger.info("Регистрация...")
         try:
             human.signup()
-        except HumanSignupError as e:
+        except HumanSignupError:
             activation.cancel()
             logger.error("Регистрация прервана, неверный номер телефона")
             return
@@ -37,13 +37,14 @@ def main():
             code = activation.get_code()
         except ActivateException as e:
             print("Ошибка в получении кода")
+            activation.cancel()
             logger.error(e)
             return
 
         logger.info(f"Подтверждение кода: {code}")
         human.confirm(code)
 
-        logger.info(f"Запись в лог: \"{human.phone}:{human.password}:{human.token}\"")
+        logger.info(f"Запись в лог: \"{human.phone}:{human.password}\"")
         log.write(f"{human.phone}:{human.password}\n")
 
     for proxy in proxies:
