@@ -3,6 +3,7 @@ from human import VkHuman, HumanSignupError
 from sms_activate import SmsActivate, ActivateException
 from config import app_settings
 from threading import Thread
+from time import sleep
 
 
 def main():
@@ -49,6 +50,7 @@ def main():
 
     for proxy in proxies:
         thread = Thread(target=create_account, args=[proxy])
+        sleep(2)
         thread.start()
 
 

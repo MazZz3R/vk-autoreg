@@ -18,8 +18,7 @@ class Activation:
         try:
             activation = GetNumber(
                 service=SmsService().VkCom,
-                country=SmsTypes.Country.RU,
-                operator=SmsTypes.Operator.any
+                country=SmsTypes.Country.RU
             ).request(self.wrapper)
         except errors.ErrorsModel as e:
             logger.error(f"При получении номера произошла ошибка: {e}")
@@ -64,6 +63,8 @@ class SmsActivate:
         except errors.ErrorsModel as e:
             print(e.message)
             exit(0)
+        else:
+            self.wrapper.url = "https://sms-activate.ru/stubs/handler_api.php"
 
     def get_balance(self) -> int:
         return GetBalance().request(self.wrapper)
